@@ -38,7 +38,6 @@ Pendant votre travail: rendez le document régulièrement (à la fin de chaque q
 
 A la fin de l'examen: enregistrez le fichier, faites un commit et poussez le projet sur GitHub. Ne modifiez pas le projet après la fin de l'examen.
 
-
 ## Estimation du nombre d'espèces
 
 *Vous disposez de trois inventaires de 10 hectares de forêt (environ 5000 arbres) :*
