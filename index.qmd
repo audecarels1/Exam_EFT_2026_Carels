@@ -151,11 +151,54 @@ autoplot(comm_lnorm)
 
 > Quelle est la richesse des communautés observées ? Quel est l'abondance de l'espèce la plus rare (approximativement, lue sur le graphique) comparativement au nombre d'arbres total ?
 
+Les deux communautés ont 100 espèces. L'espèce la plus rare a environ 700 individus pour sigma = 1 (7 pour 10 000 arbres) et environ 5 individus pour sigma = 2 (5 pour 1 million d'arbres) : avec sigma = 2, les espèces rares sont beaucoup plus rares.
+
 > Qu'observe-t-on pour un échantillon de taille raisonnable, disons 6,25ha avec 600 arbres / ha ? Faites la figure. Attention à ne pas détruire la variable `comm_lnorm` en réutilisant le code.
+
+```{r}
+# Draw 3750 trees from the sigma = 1 community
+rcommunity(
+  1,
+  size = 3750,
+  abd = as.numeric(filter(comm_lnorm, site == "sigma = 1"))
+) %>%
+  # Name it
+  mutate(site = "Small sigma = 1") ->
+  comm_small_1
+# Draw 3750 trees from the sigma = 2 community
+rcommunity(
+  1,
+  size = 3750,
+  abd = as.numeric(filter(comm_lnorm, site == "sigma = 2"))
+) %>%
+  # Name it
+  mutate(site = "Small sigma = 2") ->
+  comm_small_2
+# Make a single tibble with all data
+comm_small_1 %>%
+  # Make a single tibble
+  bind_rows(comm_small_2) ->
+  comm_small_lnorm
+# Plot the distributions
+autoplot(comm_small_lnorm)
+# Observed richness of the samples
+div_richness(comm_small_lnorm, estimator = "naive")
+```
+
+L'échantillon de 3750 arbres garde la même forme de courbe, mais ne contient plus toutes les espèces quand elles sont très rares. Pour sigma = 1, les 100 espèces sont observées (la plus rare avec 1 seul individu). Pour sigma = 2, seulement 78 espèces sur 100 sont observées, avec de nombreux singletons et doubletons (paliers à 1 et 2 individus) : les espèces très rares de la communauté sigma = 2 ont disparu de l'échantillon. Plus sigma est grand, plus l'échantillon sous-estime la richesse.
 
 > Tracez le profil de diversité des deux communautés
 
+```{r}
+comm_lnorm %>%
+  profile_hill() %>%
+  autoplot()
+```
+
+
 > Quelle est la communauté la plus diverse ? Faites le lien avec la valeur de $\sigma$.
+
+La communauté sigma = 1 est la plus diverse : même richesse (100 espèces à q = 0), mais son profil reste au-dessus pour tout q > 0 (environ 40 espèces effectives à q = 2, contre 2). Plus sigma est grand, plus les abondances sont inégales, donc moins la communauté est diverse.
 
 ## Pielou (1972)
 
