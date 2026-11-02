@@ -58,14 +58,11 @@ A la fin de l'examen: enregistrez le fichier, faites un commit et poussez le pro
 
 > Estimez rapidement la richesse asymptotique de la forêt en utilisant les estimateurs jackknife et les règles de @Brose2003.
 
-A : J1 = 100 + 20 = 120. S₁ = 20 < 100/3 ≈ 33 et la complétude vaut 100/120 = 83 % (> 74 %), donc Jackknife 1 : 120 espèces.
+A : J1 = 100 + 20 = 120. S₁ = 20 < 100/3 et la complétude vaut 100/120 = 83 % (> 74 %), donc Jackknife 1 : 120 espèces.
 
-B : S₁ = 30 > 80/3 ≈ 27, donc J1 = 110 n’est pas valable (complétude 80/110 = 73 % < 74 %). J2 = 80 + 60 − 20 = 120 ; complétude 80/120 = 67 %, entre 50 et 74 %, donc Jackknife 2 : 120 espèces.
+B : S₁ = 30 > 80/3, donc J1 = 110 n’est pas valable (complétude 80/110 = 73 % < 74 %). J2 = 80 + 60 − 20 = 120 ; complétude 80/120 = 67 %, entre 50 et 74 %, donc Jackknife 2 : 120 espèces.
 
-C : 110 singletons sur 150 espèces, c’est beaucoup trop.
-J1 = 260 : complétude 58 %, J1 ne convient pas.
-J2 = 150 + 220 − 30 = 340 : complétude 44 %, J2 ne convient pas.
-J3 = 150 + 330 − 90 + 10 = 400 : complétude 150/400 = 37,5 %, ce qui tombe dans la case 26–38 %, donc il faudrait un Jackknife 4.
+C : 110 singletons sur 150 espèces, c’est beaucoup trop. J1 = 260 : complétude 58 %, J1 ne convient pas. J2 = 150 + 220 − 30 = 340 : complétude 44 %, J2 ne convient pas. J3 = 150 + 330 − 90 + 10 = 400 : complétude 150/400 = 37,5 %, ce qui tombe dans la case 26–38 %, donc il faudrait un Jackknife 4.Même J3 sous-estime : C a donc plus de 400 espèces, mais l'inventaire est trop incomplet pour une estimation précise.
 
 ## Diversité phylogénétique
 
@@ -195,7 +192,6 @@ comm_lnorm %>%
   autoplot()
 ```
 
-
 > Quelle est la communauté la plus diverse ? Faites le lien avec la valeur de $\sigma$.
 
 La communauté sigma = 1 est la plus diverse : même richesse (100 espèces à q = 0), mais son profil reste au-dessus pour tout q > 0 (environ 40 espèces effectives à q = 2, contre 2). Plus sigma est grand, plus les abondances sont inégales, donc moins la communauté est diverse.
@@ -232,7 +228,11 @@ pielou_1972
 
 > Combien y a–t-il d'espèces de pucerons ?
 
+10 espèces de pucerons (genre Dactynotus), une par colonne.
+
 > Combien y a–t-il de plantes différentes ?
+
+12 plantes différentes (espèces de Solidago), une par ligne.
 
 *Etant donné le protocole expérimental (toutes les espèces étudiées sont dans les données, il n'y a pas d'espèce non observée), la diversité sera toujours calculée au niveau de l'échantillon: l'argument* `estimator = "naive"` *sera utilisé systématiquement.*
 
@@ -240,21 +240,57 @@ pielou_1972
 
 > Compter le nombre d'espèces de pucerons sur chaque plante.
 
+```{r}
+div_richness(pielou_1972, estimator = "naive")
+```
+
 > Quelle est la richesse maximale ?
+
+8 espèces, sur S. canadensis, S. nemoralis et S. juncea.
 
 > Calculer la diversité (pas l'entropie) de Simpson.
 
+```{r}
+div_hill(pielou_1972, q = 2, estimator = "naive")
+```
+
 > Quelle est la plante la plus diverse au sens de Simpson ?
+
+S. juncea, avec ²D = 4,9 espèces effectives.
 
 > Tracer les profils de diversité de tous les *Solidago*.
 
+```{r}
+pielou_1972 %>%
+  profile_hill(estimator = "naive") %>%
+  autoplot()
+```
+
 > Quelle est la plante apparemment la plus diverse, quel que soit l'ordre de diversité ?
+
+S. juncea : son profil est au-dessus de tous les autres pour q de 0 à 2.
 
 > Vérifiez si les courbes se croisent pour $q>2$.
 
+```{r}
+pielou_1972 %>%
+  profile_hill(orders = seq(from = 0, to = 6, by = 0.1), estimator = "naive") %>%
+  autoplot()
+```
+
+Oui : vers q = 2,5-3, le profil de S. gigantea passe au-dessus de celui de S. juncea (à q = 4 : 4,19 contre 4,11). S. juncea n'est donc la plus diverse que jusqu'à q ≈ 2,5 ; aux ordres plus élevés, qui donnent plus de poids aux espèces dominantes, S. gigantea la dépasse légèrement.
+
 > Deux profils sont plats. Expliquez pourquoi.
 
+S. ohioensis (1 espèce) vaut 1 et S. flexicaulis (2 espèces avec 1 individu chacune) vaut 2 à tous les ordres : quand toutes les espèces ont la même abondance, la diversité ne dépend pas de q.
+
 > Décomposez la diversité. Résumez cette décomposition en une ou quelques phrases. Attention : en raison d'un bug dans la version publiée du package divent, vous ne pouvez pas utiliser l'argument `estimator = "naive"` dans la fonction `div_part()`. Faites la décomposition de la diversité asymptotique avec l'estimateur par défaut.
+
+```{r}
+div_part(pielou_1972)
+```
+À l'ordre 1 (Shannon, estimateur par défaut UnveilJ) : gamma = alpha × beta, soit 6,4 espèces effectives de pucerons au total = 3,7 espèces effectives par plante × 1,7 plantes effectives. Les 12 Solidago ne valent qu'environ 2 communautés complètement distinctes : elles partagent la plupart de leurs espèces de pucerons, leurs communautés se ressemblent beaucoup.
+
 
 ### Largeur de niches
 
@@ -299,14 +335,40 @@ pielou_niches
 
 > Quelle est l'espèce de pucerons la plus généraliste ? Quelle proportion des habitats occupe-t-elle ?
 
+```{r}
+div_richness(pielou_niches, estimator = "naive")
+```
+
+D. pieloui : elle occupe 10 Solidago sur 12, soit 83 % des habitats.
+
 > Quelle est l'espèce la plus spécialiste ?
+
+D. solirostratus : elle n'occupe qu'un seul habitat, soit 1 sur 12 (8 %).
 
 > Tracez les profils de diversité des pucerons et faites le lien entre le nombre effectif de *Soledago* et la largeur de niche.
 
+```{r}
+pielou_niches %>%
+  profile_hill(estimator = "naive") %>%
+  autoplot()
+```
+
+La diversité d'ordre q d'un puceron est le nombre effectif de Solidago qu'il occupe, c'est-à-dire la largeur de sa niche. À q = 0, c'est le nombre d'habitats occupés ; quand q augmente, les habitats où le puceron est rare comptent moins. D. pieloui a la niche la plus large à tous les ordres (de 10 à 7 habitats effectifs). D. nigrotuberculatus et D. nigrotibius occupent 9 habitats mais sont concentrés sur une seule plante : leur niche effective tombe à environ 3 à q = 2. D. solirostratus, présent sur un seul habitat, a un profil plat à 1.
+
 > Pielou s'intéresse seulement à l'entropie de Shannon dans son article, sous une forme archaïque appelée formule de Brillouin, ce qui rend l'article très difficile à lire. @Levins1968 avait le premier proposé de mesurer la largeur de niche de cette façon, en proposant deux métriques : $-\sum_i{p_i \log(p_i)}$ et $\sum_i{\frac{1}{p_i^2}}$ où $p_i$ est la probabilité qu'un puceron se trouve dans l'habitat $i$. Identifiez ces deux métriques.
+
+La première, −Σ pi log(pi), est l'entropie de Shannon (ordre 1) : son exponentielle est le nombre effectif d'habitats d'ordre 1. 
+La seconde est la diversité de Simpson (ordre 2), 1 / Σ pi^2, c'est-à-dire le nombre effectif d'habitats d'ordre 2.
 
 ### Chevauchement des niches
 
 *Pielou veut évaluer le chevauchement des niches en plus de leur largeur. Le raisonnement est plus clair avec les nombres de Hill. Si les niches ne se chevauchent pas du tout, on trouve une seule espèce par habitat à condition bien sûr qu'il y ait moins d'espèces que d'habitats. A l'inverse, si toutes les espèces sont totalement généralistes, le nombre d'espèces par habitat est celui des espèces.*
 
 > Quelle est la mesure qui rend compte du chevauchement des niches ? Donnez sa valeur pour q = 1.
+
+```{r}
+div_part(pielou_1972, q = 1)
+```
+
+
+C'est la diversité alpha des pucerons, le nombre effectif d'espèces de pucerons par Solidago : elle vaut 1 si les niches ne se chevauchent pas et gamma si toutes les espèces sont partout. Pour q = 1 : alpha = 3,7 espèces effectives par plante, pour gamma = 6,4. Le chevauchement relatif alpha / gamma = 1 / beta = 3,7 / 6,4 ≈ 0,58 : les niches se chevauchent fortement.
