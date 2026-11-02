@@ -23,8 +23,6 @@ execute:
 
 # Instructions
 
-## Français
-
 Commencez par choisir votre langue et supprimez la partie du document rédigée dans l'autre langue.
 
 Répondez aux questions de manière précise mais concise : les questions sont détaillées pour vous guider, c'est pourquoi elles sont nombreuses. Ne perdez pas votre temps à répéter le cours : vous disposez de tous les documents, il est inutile d'en recopier le contenu. Pour répondre aux questions factuelles, vous n'avez pas besoin de rédiger des phrases : par exemple, écrivez simplement "4." pour répondre à la question "Combien font 2 + 2 ?".
@@ -40,7 +38,6 @@ Pendant votre travail: rendez le document régulièrement (à la fin de chaque q
 
 A la fin de l'examen: enregistrez le fichier, faites un commit et poussez le projet sur GitHub. Ne modifiez pas le projet après la fin de l'examen.
 
-# Français
 
 ## Estimation du nombre d'espèces
 
@@ -58,9 +55,9 @@ A la fin de l'examen: enregistrez le fichier, faites un commit et poussez le pro
 
 > Estimez rapidement la richesse asymptotique de la forêt en utilisant les estimateurs jackknife et les règles de @Brose2003.
 
-A : J1 = 100 + 20 = 120. S₁ = 20 < 100/3 et la complétude vaut 100/120 = 83 % (> 74 %), donc Jackknife 1 : 120 espèces.
+A : J1 = 100 + 20 = 120. S₁ = 20 \< 100/3 et la complétude vaut 100/120 = 83 % (\> 74 %), donc Jackknife 1 : 120 espèces.
 
-B : S₁ = 30 > 80/3, donc J1 = 110 n’est pas valable (complétude 80/110 = 73 % < 74 %). J2 = 80 + 60 − 20 = 120 ; complétude 80/120 = 67 %, entre 50 et 74 %, donc Jackknife 2 : 120 espèces.
+B : S₁ = 30 \> 80/3, donc J1 = 110 n’est pas valable (complétude 80/110 = 73 % \< 74 %). J2 = 80 + 60 − 20 = 120 ; complétude 80/120 = 67 %, entre 50 et 74 %, donc Jackknife 2 : 120 espèces.
 
 C : 110 singletons sur 150 espèces, c’est beaucoup trop. J1 = 260 : complétude 58 %, J1 ne convient pas. J2 = 150 + 220 − 30 = 340 : complétude 44 %, J2 ne convient pas. J3 = 150 + 330 − 90 + 10 = 400 : complétude 150/400 = 37,5 %, ce qui tombe dans la case 26–38 %, donc il faudrait un Jackknife 4.Même J3 sous-estime : C a donc plus de 400 espèces, mais l'inventaire est trop incomplet pour une estimation précise.
 
@@ -194,7 +191,7 @@ comm_lnorm %>%
 
 > Quelle est la communauté la plus diverse ? Faites le lien avec la valeur de $\sigma$.
 
-La communauté sigma = 1 est la plus diverse : même richesse (100 espèces à q = 0), mais son profil reste au-dessus pour tout q > 0 (environ 40 espèces effectives à q = 2, contre 2). Plus sigma est grand, plus les abondances sont inégales, donc moins la communauté est diverse.
+La communauté sigma = 1 est la plus diverse : même richesse (100 espèces à q = 0), mais son profil reste au-dessus pour tout q \> 0 (environ 40 espèces effectives à q = 2, contre 2). Plus sigma est grand, plus les abondances sont inégales, donc moins la communauté est diverse.
 
 ## Pielou (1972)
 
@@ -289,8 +286,8 @@ S. ohioensis (1 espèce) vaut 1 et S. flexicaulis (2 espèces avec 1 individu ch
 ```{r}
 div_part(pielou_1972)
 ```
-À l'ordre 1 (Shannon, estimateur par défaut UnveilJ) : gamma = alpha × beta, soit 6,4 espèces effectives de pucerons au total = 3,7 espèces effectives par plante × 1,7 plantes effectives. Les 12 Solidago ne valent qu'environ 2 communautés complètement distinctes : elles partagent la plupart de leurs espèces de pucerons, leurs communautés se ressemblent beaucoup.
 
+À l'ordre 1 (Shannon, estimateur par défaut UnveilJ) : gamma = alpha × beta, soit 6,4 espèces effectives de pucerons au total = 3,7 espèces effectives par plante × 1,7 plantes effectives. Les 12 Solidago ne valent qu'environ 2 communautés complètement distinctes : elles partagent la plupart de leurs espèces de pucerons, leurs communautés se ressemblent beaucoup.
 
 ### Largeur de niches
 
@@ -357,8 +354,7 @@ La diversité d'ordre q d'un puceron est le nombre effectif de Solidago qu'il oc
 
 > Pielou s'intéresse seulement à l'entropie de Shannon dans son article, sous une forme archaïque appelée formule de Brillouin, ce qui rend l'article très difficile à lire. @Levins1968 avait le premier proposé de mesurer la largeur de niche de cette façon, en proposant deux métriques : $-\sum_i{p_i \log(p_i)}$ et $\sum_i{\frac{1}{p_i^2}}$ où $p_i$ est la probabilité qu'un puceron se trouve dans l'habitat $i$. Identifiez ces deux métriques.
 
-La première, −Σ pi log(pi), est l'entropie de Shannon (ordre 1) : son exponentielle est le nombre effectif d'habitats d'ordre 1. 
-La seconde est la diversité de Simpson (ordre 2), 1 / Σ pi^2, c'est-à-dire le nombre effectif d'habitats d'ordre 2.
+La première, $-\sum_i{p_i \log(p_i)}$, est l'entropie de Shannon (ordre 1) : son exponentielle est le nombre effectif d'habitats d'ordre 1. La seconde est la diversité de Simpson (ordre 2), $\sum_i{\frac{1}{p_i^2}}$, c'est-à-dire le nombre effectif d'habitats d'ordre 2.
 
 ### Chevauchement des niches
 
@@ -370,5 +366,4 @@ La seconde est la diversité de Simpson (ordre 2), 1 / Σ pi^2, c'est-à-dire le
 div_part(pielou_1972, q = 1)
 ```
 
-
-C'est la diversité alpha des pucerons, le nombre effectif d'espèces de pucerons par Solidago : elle vaut 1 si les niches ne se chevauchent pas et gamma si toutes les espèces sont partout. Pour q = 1 : alpha = 3,7 espèces effectives par plante, pour gamma = 6,4. Le chevauchement relatif alpha / gamma = 1 / beta = 3,7 / 6,4 ≈ 0,58 : les niches se chevauchent fortement.
+C'est la diversité alpha des pucerons, le nombre effectif d'espèces de pucerons par Solidago : elle vaut 1 si les niches ne se chevauchent pas et gamma si toutes les espèces sont partout. Pour q = 1 : alpha = 3,7 espèces effectives par plante, pour gamma = 6,4. Le chevauchement relatif alpha / gamma = 1 / beta = 3,7 / 6,4 = 0,58 : les niches se chevauchent fortement.
